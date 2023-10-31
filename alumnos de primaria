@@ -1,0 +1,72 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class ProgramaCAI {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int correctAnswers = 0;
+        int totalQuestions = 0;
+
+        System.out.println("Bienvenido al Programa de Instrucción Asistida por Computadora (CAI) para operaciones aritméticas.");
+        System.out.println("Por favor, elige el nivel de dificultad (1, 2, 3, ...) y el tipo de problema (1: suma, 2: resta, 3: multiplicación, 4: división, 5: mezcla).");
+
+        int difficultyLevel = scanner.nextInt();
+        int problemType = scanner.nextInt();
+
+        while (correctAnswers < 10) {
+            int num1 = generateNumber(difficultyLevel);
+            int num2 = generateNumber(difficultyLevel);
+            String operator = getOperator(problemType);
+            int result = calculateResult(num1, num2, operator);
+
+            System.out.print("¿Cuánto es " + num1 + " " + operator + " " + num2 + "? ");
+            int userAnswer = scanner.nextInt();
+
+            if (userAnswer == result) {
+                String[] positiveFeedback = {"¡Muy bien!", "¡Excelente!", "¡Buen trabajo!", "¡Sigue así!"};
+                System.out.println(positiveFeedback[random.nextInt(positiveFeedback.length)]);
+                correctAnswers++;
+            } else {
+                String[] negativeFeedback = {"No. Por favor intenta de nuevo.", "Incorrecto. Intenta una vez más.", "¡No te rindas!", "No. Sigue intentando."};
+                System.out.println(negativeFeedback[random.nextInt(negativeFeedback.length)]);
+            }
+
+            totalQuestions++;
+        }
+
+        double successRate = (double) correctAnswers / totalQuestions * 100;
+
+        if (successRate < 75) {
+            System.out.println("Por favor, pide ayuda adicional a tu instructor.");
+        } else {
+            System.out.println("¡Felicidades, estás listo para pasar al siguiente nivel!");
+        }
+    }
+
+    public static int generateNumber(int difficultyLevel) {
+        Random random = new Random();
+        int max = (int) Math.pow(10, difficultyLevel);
+        return random.nextInt(max);
+    }
+
+    public static String getOperator(int problemType) {
+        String[] operators = {"+", "-", "*", "/"};
+        return operators[problemType - 1];
+    }
+
+    public static int calculateResult(int num1, int num2, String operator) {
+        switch (operator) {
+            case "+":
+                return num1 + num2;
+            case "-":
+                return num1 - num2;
+            case "*":
+                return num1 * num2;
+            case "/":
+                return num1 / num2;
+            default:
+                return 0;
+        }
+    }
+}
